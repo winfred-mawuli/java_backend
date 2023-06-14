@@ -1,7 +1,7 @@
 package com.backend.services;
 
 import com.backend.exceptions.UserNotFoundException;
-import com.backend.models.Users;
+import com.backend.models.User;
 import com.backend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +21,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Users> getUsers() {
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public void addMember(Users user) {
-        Optional<Users> userOptional = userRepository.findUsersByEmail(user.getEmail());
+    public void addMember(User user) {
+        Optional<User> userOptional = userRepository.findUsersByEmail(user.getEmail());
         if (userOptional.isPresent()) {
             throw new IllegalStateException("email Taken");
         }
@@ -47,8 +47,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(Integer userId, String name, String email, String password) {
-        Users user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalStateException("student does not exist"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User does not exist"));
 
         if (name != null && name.length() > 0 && !Objects.equals(user.getName(), name)) {
             user.setName(name);
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (email != null && email.length() > 0 && !Objects.equals(user.getEmail(), email)) {
-            Optional<Users> usersOptional = userRepository.findUsersByEmail(email);
+            Optional<User> usersOptional = userRepository.findUsersByEmail(email);
             if (usersOptional.isPresent()) {
                 throw new IllegalStateException("email Taken");
             }
@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<Users> getUser(Integer userId) {
-        Optional<Users> user = userRepository.findById(userId);
+    public Optional<User> getUser(Integer userId) {
+        Optional<User> user = userRepository.findById(userId);
         if (!user.isPresent()) {
             throw new UserNotFoundException("User not found");
         }

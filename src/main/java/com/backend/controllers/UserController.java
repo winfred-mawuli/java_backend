@@ -1,7 +1,9 @@
 package com.backend.controllers;
 
-import com.backend.models.Users;
+
+import com.backend.models.User;
 import com.backend.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,18 +23,18 @@ public class UserController {
 
 
     @GetMapping
-    public List<Users> getUsers() {
+    public List<User> getUsers() {
         return userService.getUsers();
     }
 
     @GetMapping("{userId}")
-    public Optional<Users> getUser(@PathVariable("userId") Integer userId){
+    public Optional<User> getUser(@PathVariable("userId") Integer userId) {
         return userService.getUser(userId);
     }
 
 
     @PostMapping
-    public void registerNewMember(@RequestBody Users user) {
+    public void registerNewMember(@Valid @RequestBody User user) {
         userService.addMember(user);
     }
 
