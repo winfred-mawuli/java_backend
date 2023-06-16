@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException("email Taken");
         }
         userRepository.save(user);
-
     }
 
     @Override
@@ -52,7 +51,6 @@ public class UserServiceImpl implements UserService {
 
         if (name != null && name.length() > 0 && !Objects.equals(user.getName(), name)) {
             user.setName(name);
-
         }
 
         if (email != null && email.length() > 0 && !Objects.equals(user.getEmail(), email)) {
@@ -61,11 +59,9 @@ public class UserServiceImpl implements UserService {
                 throw new IllegalStateException("email Taken");
             }
             user.setEmail(email);
-
         }
         if (password != null && password.length() > 0 && !Objects.equals(user.getPassword(), password)) {
             user.setPassword(password);
-
         }
     }
 
